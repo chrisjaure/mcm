@@ -7,7 +7,7 @@ var routes = Router();
 var server;
 
 function template (running) {
-	var html = '<html><head><title>mc.cleverchris.com</title><body>';
+	var html = '<html><head><title>Minecraft Server Status</title><body>';
 	if (running) {
 		html += 'Server is running!';
 	}
