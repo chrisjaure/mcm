@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "build": "NODE_ENV=production npm run build-js",
+    "build-js": "browserify client/index.js -t babelify | uglifyjs --compress --mangle > client/build.js",
+    "dev": "npm run watch-js & DEBUG='mcm:*' node server/index.js",
+    "start": "npm run build && node server/index.js",
+    "watch-js": "watchify client/index.js -t babelify --debug --verbose -o client/build.js"
   },
   "repository": {
     "type": "git",
@@ -18,11 +22,20 @@
   },
   "homepage": "https://github.com/chrisjaure/mcm",
   "dependencies": {
+    "babelify": "^6.0.2",
+    "browserify": "^9.0.8",
     "debug": "^2.1.3",
     "eventemitter3": "^0.1.6",
     "finalhandler": "^0.3.4",
     "googleapis": "^2.0.2",
     "mc-ping": "0.0.3",
-    "router": "^1.0.0"
+    "react": "^0.13.1",
+    "react-loader": "^1.2.0",
+    "router": "^1.0.0",
+    "uglifyjs": "^2.4.10",
+    "whatwg-fetch": "^0.7.0"
+  },
+  "devDependencies": {
+    "watchify": "^3.1.0"
   }
 }

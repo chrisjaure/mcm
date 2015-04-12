@@ -1,34 +1,35 @@
 var http = require('http');
+var fs = require('fs');
 var Router = require('router');
 var finalhandler = require('finalhandler');
 var debugServer = require('debug')('mcm:server');
-var mcm = require('./index')();
+var mcm = require('../index')();
 var routes = Router();
 var server;
 
-function template (running) {
-	var html = '<html><head><title>Minecraft Server Status</title><body>';
-	if (running) {
-		html += 'Server is running!';
-	}
-	else {
-		html += 'Server is not running. <a href="/start">Start it.</a>';
-	}
-	html += '</body></html>';
-	return html;
+function respondJson (res, object, code) {
+	res.writeHead(code || 200, {"Content-Type": "application/json"});
+	res.end(JSON.stringify(object));
 }
 
 routes.get('/', function(req, res) {
-	res.setHeader('Content-Type', 'text/html; charset=utf-8');
+	fs.createReadStream(__dirname + '/../client/index.html').pipe(res);
+});
+routes.get('/build.js', function(req, res) {
+	fs.createReadStream(__dirname + '/../client/build.js').pipe(res);
+});
+
+routes.get('/status', function(req, res) {
 	mcm.getStatus(function(err, stat) {
 		if (err) {
-			debugServer(err);
+			return respondJson(res, { status: 0 });
 		}
-		res.end(template(!err));
+		stat.status = 1;
+		respondJson(res, stat);
 	});
 });
 
-routes.get('/start', function(req, res) {
+routes.post('/start', function(req, res) {
 	mcm.getStatus(function(err, stat) {
 		if (!err) {
 			return res.end('Already started!');
@@ -43,7 +44,7 @@ routes.get('/start', function(req, res) {
 	});
 });
 
-routes.get('/stop', function(req, res) {
+routes.post('/stop', function(req, res) {
 	mcm.getStatus(function(err, stat) {
 		if (err) {
 			return res.end('Already stopped!');
