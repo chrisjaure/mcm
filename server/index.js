@@ -32,14 +32,14 @@ routes.get('/status', function(req, res) {
 routes.post('/start', function(req, res) {
 	mcm.getStatus(function(err, stat) {
 		if (!err) {
-			return res.end('Already started!');
+			return respondJson(res, { error: 'Already started!' }, 403);
 		}
 		mcm.start(function(err) {
 			if (err) {
 				debugServer(err);
-				return res.end('Cannot start server!');
+				return respondJson(res, { error: 'Cannot start server!' }, 500);
 			}
-			res.end('Server started!');
+			respondJson(res, { success: 'Server started!' });
 		});
 	});
 });
@@ -47,19 +47,19 @@ routes.post('/start', function(req, res) {
 routes.post('/stop', function(req, res) {
 	mcm.getStatus(function(err, stat) {
 		if (err) {
-			return res.end('Already stopped!');
+			return respondJson(res, { error: 'Already stopped!' }, 403);
 		}
 		if (stat.num_players === 0) {
 			mcm.stop(function(err) {
 				if (err) {
 					debugServer(err);
-					return res.end('Cannot stop server!');
+					return respondJson(res, { error: 'Cannot stop server!' }, 500);
 				}
-				res.end('Server stopped!');
+				respondJson(res, { success: 'Server stopped!' });
 			});
 		}
 		else {
-			res.end('There are %s players still connected!', stat.num_players);
+			respondJson(res, { error: 'There are '+stat.num_players+' players still connected!' }, 403);
 		}
 	});
 });
