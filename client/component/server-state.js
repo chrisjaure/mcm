@@ -28,7 +28,7 @@ export default class ServerState extends React.Component {
 		return (
 			<div>
 				<Loader loaded={this.props.loaded} />
-				{actions}
+				{this.props.loaded ? actions : null}
 			</div>
 		);
 	}
