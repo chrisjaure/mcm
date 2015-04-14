@@ -41,7 +41,7 @@ export default class ServerAction extends React.Component {
 	}
 	render () {
 		return (
-			<button onClick={this.doAction.bind(this)} disabled={this.state.loaded ? null : true}>
+			<button className="btn btn-1 btn-1a" onClick={this.doAction.bind(this)} disabled={this.state.loaded ? null : true}>
 				<Loader loaded={this.state.loaded} />
 				{this.props.children}
 			</button>

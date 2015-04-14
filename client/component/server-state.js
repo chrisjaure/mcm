@@ -17,21 +17,29 @@ export default class ServerState extends React.Component {
 	renderNoServer () {
 		return (
 			<div>
-				<p>Server not started!</p>
-				<ServerAction action={this.props.serverActions.start} checkStatus={this.checkStatus(1)}>
-					Start server
-				</ServerAction>
+				<div className="section inactive">
+					<h2>Server not started!</h2>
+				</div>
+				<div className="section">
+					<ServerAction action={this.props.serverActions.start} checkStatus={this.checkStatus(1)}>
+						Start server
+					</ServerAction>
+				</div>
 			</div>
 		);
 	}
 	renderServer () {
 		return (
 			<div>
-				<p>{this.props.server.server_name} started.</p>
-				<p>{this.props.server.num_players} players joined.</p>
-				<ServerAction action={this.props.serverActions.stop} checkStatus={this.checkStatus(0)}>
-					Stop server
-				</ServerAction>
+				<div className="section active">
+					<h2>{this.props.server.server_name} started.</h2>
+					<p>{this.props.server.num_players} players joined.</p>
+				</div>
+				<div className="section">
+					<ServerAction action={this.props.serverActions.stop} checkStatus={this.checkStatus(0)}>
+						Stop server
+					</ServerAction>
+				</div>
 			</div>
 		);
 	}

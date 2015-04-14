@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "NODE_ENV=production npm run build-js",
-    "build-js": "browserify client/index.js -t babelify | uglifyjs --compress --mangle > client/build.js",
+    "build-js": "browserify client/index.js -t cssify -t babelify | uglifyjs --compress --mangle > client/build.js",
     "dev": "npm run watch-js & DEBUG='mcm:*' node server/index.js",
     "start": "npm run build && node server/index.js",
-    "watch-js": "watchify client/index.js -t babelify --debug --verbose -o client/build.js"
+    "watch-js": "watchify client/index.js -t cssify -t babelify --debug --verbose -o client/build.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
   "dependencies": {
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
+    "cssify": "^0.7.0",
     "debug": "^2.1.3",
     "eventemitter3": "^0.1.6",
     "finalhandler": "^0.3.4",
