@@ -14,7 +14,7 @@ export default class Loader extends React.Component {
 		var opacity = {
 			opacity: (this.state.visible) ? 1 : 0
 		};
-		var classNames = 'loader ' + this.props.className || '';
+		var classNames = 'loader ' + (this.props.className || '');
 		return (
 			<div className={classNames} style={opacity}>
 				<div className="clock"></div>

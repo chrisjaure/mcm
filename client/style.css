@@ -35,7 +35,11 @@ h2 {
 }
 
 .app-loader {
-	margin: 5em auto;
+	background: #CD0E41;
+	height: 86px;
+	margin: 8.5em auto;
+	padding: 1em;
+	width: 86px;
 }
 
 .section {
@@ -124,21 +128,12 @@ h2 {
 	cursor: pointer;
 	padding: 25px 80px;
 	display: inline-block;
-	margin: 15px 30px;
+	margin: 15px 0;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	font-weight: 700;
 	outline: none;
 	position: relative;
-	-webkit-transition: all 0.3s;
-	-moz-transition: all 0.3s;
-	transition: all 0.3s;
-}
-
-.btn:after {
-	content: '';
-	position: absolute;
-	z-index: -1;
 	-webkit-transition: all 0.3s;
 	-moz-transition: all 0.3s;
 	transition: all 0.3s;
@@ -159,23 +154,25 @@ h2 {
 }
 
 .btn-loading {
-	background: #fff;
+	background: rgb(67, 162, 223) !important;
 	border-radius: 50%;
-	border-width: 0;
-	height: 96px;
+	box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+	height: 74px;
 	padding: 0;
 	transition-duration: 0.5s;
-	width: 96px;
+	width: 74px;
 }
 
 /* Loader */
 
 .loader {
-	background: #CD0E41;
 	border-radius: 50%;
-	height: 96px;
-	width: 96px;
 	transition: opacity 0.3s;
+}
+
+.loader-btn .clock {
+	border: 0;
+	transform: scale(0.8) translate(-7px, -7px);
 }
 
 /* -------------- Clock -------------- */
@@ -186,13 +183,6 @@ h2 {
 	height: 80px;
 	width: 80px;
 	position: relative;
-
-	top: 28%;
-	top: -webkit-calc(50% - 43px);
-	top: calc(50% - 43px);
-	left: 35%;
-	left: -webkit-calc(50% - 43px);
-	left: calc(50% - 43px);
 }
 .clock:after{
 	content: "";
