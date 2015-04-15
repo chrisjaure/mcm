@@ -2,8 +2,8 @@ body {
 	background: #fff;
 	font-family: Arial;
 	font-size: 100%;
-	padding: 0;
 	margin: 0;
+	padding: 0;
 }
 
 h1 {
@@ -15,8 +15,8 @@ h2 {
 }
 
 .container {
-	text-align: center;
 	overflow: hidden;
+	text-align: center;
 }
 
 .app-header {
@@ -49,93 +49,55 @@ h2 {
 	transition: background 0.2s;
 }
 
-.section.inactive {
+.inactive {
 	background: #CD0E41;
 }
 
-.section.active {
+.active {
 	background: #71CD0E;
 }
 
 .animate-in {
-	-moz-animation-name: slideIn;
-    -moz-animation-iteration-count: 1;
-    -moz-animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-    -moz-animation-duration: 0.5s;
-
-    -webkit-animation-name: slideIn;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-    -webkit-animation-duration: 0.5s;
-
-    animation-name: slideIn;
-    animation-iteration-count: 1;
-    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-    animation-duration: 0.5s;
-
-    -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
-	-moz-animation-fill-mode:forwards;
 	animation-fill-mode:forwards;
-
-    opacity: 0;
+	animation-duration: 0.5s;
+	animation-iteration-count: 1;
+	animation-name: slideIn;
+	animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+	opacity: 0;
 }
 
 .animate-delay {
-    -moz-animation-delay: 0.1s;
-    -webkit-animation-delay: 0.1s;
-    animation-delay: 0.1s;
+	animation-delay: 0.1s;
 }
 
-@-moz-keyframes slideIn {
-    0% {
-        -moz-transform: translateY(30px);
-        opacity: 0;
-    }
-    100% {
-        -moz-transform: translateY(0);
-        opacity: 1;
-    }
-}
-@-webkit-keyframes slideIn {
-    0% {
-        -webkit-transform: translateY(30px);
-        opacity: 0;
-    }
-    100% {
-        -webkit-transform: translateY(0);
-        opacity: 1;
-    }
-}
 @keyframes slideIn {
-    0% {
-        transform: translateY(30px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
+	0% {
+		transform: translateY(30px);
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
 }
 
 
 /* General button style (reset) */
 .btn {
+	background: none;
 	border: none;
+	color: inherit;
+	cursor: pointer;
+	display: inline-block;
 	font-family: inherit;
 	font-size: inherit;
-	color: inherit;
-	background: none;
-	cursor: pointer;
-	padding: 25px 80px;
-	display: inline-block;
-	margin: 15px 0;
-	text-transform: uppercase;
-	letter-spacing: 1px;
 	font-weight: 700;
+	letter-spacing: 1px;
+	margin: 15px 0;
 	outline: none;
+	padding: 25px 80px;
 	position: relative;
-	-webkit-transition: all 0.3s;
-	-moz-transition: all 0.3s;
+	text-transform: uppercase;
 	transition: all 0.3s;
 }
 
@@ -149,8 +111,8 @@ h2 {
 /* Button 1a */
 .btn-1a:hover,
 .btn-1a:active {
-	color: #0e83cd;
 	background: #fff;
+	color: #0e83cd;
 }
 
 .btn-loading {
@@ -181,55 +143,41 @@ h2 {
 	border-radius: 60px;
 	border: 3px solid #fff;
 	height: 80px;
-	width: 80px;
 	position: relative;
+	width: 80px;
 }
 .clock:after{
-	content: "";
-	position: absolute;
+	animation: grdAiguille 2s linear infinite;
 	background-color: #fff;
-	top:2px;
-	left: 48%;
-	height: 38px;
-	width: 4px;
 	border-radius: 5px;
-	-webkit-transform-origin: 50% 97%;
-			transform-origin: 50% 97%;
-	-webkit-animation: grdAiguille 2s linear infinite;
-			animation: grdAiguille 2s linear infinite;
-}
-
-@-webkit-keyframes grdAiguille{
-    0%{-webkit-transform:rotate(0deg);}
-    100%{-webkit-transform:rotate(360deg);}
+	content: "";
+	height: 38px;
+	left: 48%;
+	position: absolute;
+	top:2px;
+	transform-origin: 50% 97%;
+	width: 4px;
 }
 
 @keyframes grdAiguille{
-    0%{transform:rotate(0deg);}
-    100%{transform:rotate(360deg);}
+	0%{transform:rotate(0deg);}
+	100%{transform:rotate(360deg);}
 }
 
 .clock:before{
-	content: "";
-	position: absolute;
+	animation: ptAiguille 12s linear infinite;
 	background-color: #fff;
-	top:6px;
-	left: 48%;
-	height: 35px;
-	width: 4px;
 	border-radius: 5px;
-	-webkit-transform-origin: 50% 94%;
-			transform-origin: 50% 94%;
-	-webkit-animation: ptAiguille 12s linear infinite;
-			animation: ptAiguille 12s linear infinite;
-}
-
-@-webkit-keyframes ptAiguille{
-    0%{-webkit-transform:rotate(0deg);}
-    100%{-webkit-transform:rotate(360deg);}
+	content: "";
+	height: 35px;
+	left: 48%;
+	position: absolute;
+	top:6px;
+	transform-origin: 50% 94%;
+	width: 4px;
 }
 
 @keyframes ptAiguille{
-    0%{transform:rotate(0deg);}
-    100%{transform:rotate(360deg);}
+	0%{transform:rotate(0deg);}
+	100%{transform:rotate(360deg);}
 }

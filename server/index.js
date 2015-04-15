@@ -18,6 +18,9 @@ routes.get('/', function(req, res) {
 routes.get('/build.js', function(req, res) {
 	fs.createReadStream(__dirname + '/../client/build.js').pipe(res);
 });
+routes.get('/build.css', function(req, res) {
+	fs.createReadStream(__dirname + '/../client/build.css').pipe(res);
+});
 
 routes.get('/status', function(req, res) {
 	mcm.getStatus(function(err, stat) {
