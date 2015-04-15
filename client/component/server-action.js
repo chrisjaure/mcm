@@ -1,5 +1,5 @@
 import React from 'react';
-import Loader from 'react-loader';
+import Loader from './loader';
 
 const maxTries = 10;
 const delayInSeconds = 30;
@@ -40,10 +40,13 @@ export default class ServerAction extends React.Component {
 		});
 	}
 	render () {
+		var classNames = 'btn btn-1 btn-1a';
+		if (!this.state.loaded) {
+			classNames += ' btn-loading';
+		}
 		return (
-			<button className="btn btn-1 btn-1a" onClick={this.doAction.bind(this)} disabled={this.state.loaded ? null : true}>
-				<Loader loaded={this.state.loaded} />
-				{this.props.children}
+			<button className={classNames} onClick={this.doAction.bind(this)} disabled={!this.state.loaded}>
+				{this.state.loaded ? this.props.children : <Loader />}
 			</button>
 		);
 	}

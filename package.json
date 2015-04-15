@@ -31,7 +31,6 @@
     "googleapis": "^2.0.2",
     "mc-ping": "0.0.3",
     "react": "^0.13.1",
-    "react-loader": "^1.2.0",
     "router": "^1.0.0",
     "uglifyjs": "^2.4.10",
     "whatwg-fetch": "^0.7.0"
