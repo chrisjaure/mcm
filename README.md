@@ -3,6 +3,8 @@ Startup and shutdown a minecraft server running on Google Cloud Compute.
 
 Minecraft sever usage will be monitored and the instance will be shut down automatically after 10 minutes of inactivity.
 
+[Watch demo](https://youtu.be/-I8xJFH96Bc).
+
 ## Command Line Usage
 
 ```
