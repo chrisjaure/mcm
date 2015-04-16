@@ -1,7 +1,9 @@
 var http = require('http');
 var fs = require('fs');
+var Readable = require('stream').Readable;
 var Router = require('router');
 var finalhandler = require('finalhandler');
+var CombinedStream = require('combined-stream');
 var debugServer = require('debug')('mcm:server');
 var mcm = require('../index')();
 var routes = Router();
@@ -13,7 +15,17 @@ function respondJson (res, object, code) {
 }
 
 routes.get('/', function(req, res) {
-	fs.createReadStream(__dirname + '/../client/index.html').pipe(res);
+	var index = CombinedStream.create();
+	var script;
+	index.append(fs.createReadStream(__dirname + '/../client/index.html'));
+	if (process.env.NODE_ENV !== 'production') {
+		// add browser-sync for reloading css
+		script = new Readable();
+		script.push('<script id="__bs_script__">document.write("<script async src=\'http://HOST:3000/browser-sync/browser-sync-client.2.6.4.js\'><\\/script>".replace("HOST", location.hostname));</script>');
+		script.push(null);
+		index.append(script);
+	}
+	index.pipe(res);
 });
 routes.get('/build.js', function(req, res) {
 	fs.createReadStream(__dirname + '/../client/build.js').pipe(res);

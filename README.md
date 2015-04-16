@@ -30,3 +30,11 @@ More info can be printed to stdout by setting the DEBUG environment variable to 
 - `mcm:info`: Print extra info.
 - `mcm:server`: Print server errors.
 - `mcm:*`: Print all logs.
+
+## Development
+
+To start a dev server running on [localhost:8000](http://localhost:8000) that will automate js and css compilation as well as reload changes in the browser run:
+
+```
+npm run dev
+```

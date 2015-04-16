@@ -1,0 +1,12 @@
+#!/bin/bash
+
+WATCHIFY_ARGS="client/index.js -t cssify -t babelify -t livereactload --debug --verbose -o client/build.js"
+{ { node_modules/.bin/watchify $WATCHIFY_ARGS 1>&2; } 2>&1 \
+  | while read result; do
+    echo "$result"
+    [[ "$result" =~ ^[0-9]+[[:space:]]bytes[[:space:]]written  ]] && node_modules/.bin/livereactload notify
+  done
+} &
+
+node_modules/.bin/livereactload listen
+wait
