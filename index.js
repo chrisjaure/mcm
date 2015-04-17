@@ -74,7 +74,7 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 		clearTimer();
 		log.info('Monitoring started');
 		monitorTimer = setInterval(function() {
-			getStatus(function(err, stat) {
+			server.getStatus(function(err, stat) {
 				if (err) {
 					return log.error(err);
 				}
@@ -88,8 +88,9 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 	}
 
 	function start (callback) {
+		callback = callback || function() {};
 		if (starting) {
-			return log.info('Already trying to start server!');
+			return callback(new Error('Already trying to start server!'));
 		}
 		starting = true;
 		callback = callback || function() {};
@@ -115,8 +116,9 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 	}
 
 	function stop (callback) {
+		callback = callback || function() {};
 		if (stopping) {
-			return log.info('Already trying to stop server!');
+			return callback(new Error('Already trying to stop server!'));
 		}
 		stopping = true;
 		callback = callback || function() {};
@@ -144,13 +146,18 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 	server.start = start;
 	server.stop = stop;
 	server.getStatus = getStatus;
+	server.monitor = monitor;
 
-	server.on('empty', stop);
-	server.on('start', monitor);
+	server.on('empty', function() {
+		server.stop();
+	});
+	server.on('start', function() {
+		server.monitor();
+	});
 	server.on('stop', clearTimer);
 
 	// check if server is already running
-	getStatus(function(err) {
+	server.getStatus(function(err) {
 		if (!err) {
 			log.info('Minecraft server already running');
 			server.emit('start');

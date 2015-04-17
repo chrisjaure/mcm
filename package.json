@@ -4,7 +4,8 @@
   "description": "Automatically start up and shut down a minecraft server.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jasmine",
+    "test-watch": "watch-run -ip 'spec/**.spec.js' -- jasmine",
     "build": "NODE_ENV=production npm run build-js && npm run build-css",
     "build-css": "cat client/style.css | autoprefixer | cleancss > client/build.css",
     "build-js": "browserify client/index.js -t cssify -t babelify | uglifyjs --compress --mangle > client/build.js",
@@ -42,7 +43,9 @@
   },
   "devDependencies": {
     "browser-sync": "^2.6.4",
+    "jasmine": "^2.2.1",
     "livereactload": "^0.4.0",
+    "proxyquire": "^1.4.0",
     "watch-run": "^1.2.2",
     "watchify": "^3.1.0"
   }
