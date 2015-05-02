@@ -3,7 +3,7 @@ import React from 'react';
 export default class Loader extends React.Component {
 	constructor (props) {
 		super(props);
-		this.state = { visible: true };
+		this.state = { visible: false };
 	}
 	render () {
 		var opacity = {
