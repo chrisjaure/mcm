@@ -1,21 +1,25 @@
-var fs = require('fs');
-var Readable = require('stream').Readable;
-var Router = require('router');
-var CombinedStream = require('combined-stream');
-var debugServer = require('debug')('mcm:server');
-var mcm = require('../index')();
-var routes = Router();
+import fs from 'fs';
+import { Readable } from 'stream';
+import Router from 'router';
+import debug from 'debug';
+import CombinedStream from 'combined-stream';
+import Mcm from '../index';
+import App from '../client/component/app';
+
+const routes = Router();
+const debugServer = debug('mcm:server');
+const mcm = Mcm();
 
 function respondJson (res, object, code) {
 	res.writeHead(code || 200, {"Content-Type": "application/json"});
 	res.end(JSON.stringify(object));
 }
 
-module.exports = routes;
+export default routes;
 
-routes.get('/', function(req, res) {
-	var index = CombinedStream.create();
-	var script;
+routes.get('/', (req, res) => {
+	let index = CombinedStream.create();
+	let script;
 	index.append(fs.createReadStream(__dirname + '/../client/index.html'));
 	if (process.env.NODE_ENV !== 'production') {
 		// add browser-sync for reloading css
@@ -26,15 +30,15 @@ routes.get('/', function(req, res) {
 	}
 	index.pipe(res);
 });
-routes.get('/build.js', function(req, res) {
+routes.get('/build.js', (req, res) => {
 	fs.createReadStream(__dirname + '/../client/build.js').pipe(res);
 });
-routes.get('/build.css', function(req, res) {
+routes.get('/build.css', (req, res) => {
 	fs.createReadStream(__dirname + '/../client/build.css').pipe(res);
 });
 
-routes.get('/status', function(req, res) {
-	mcm.getStatus(function(err, stat) {
+routes.get('/status', (req, res) => {
+	mcm.getStatus((err, stat) => {
 		if (err) {
 			return respondJson(res, { status: 0 });
 		}
@@ -43,12 +47,12 @@ routes.get('/status', function(req, res) {
 	});
 });
 
-routes.post('/start', function(req, res) {
-	mcm.getStatus(function(err, stat) {
+routes.post('/start', (req, res) => {
+	mcm.getStatus((err, stat) => {
 		if (!err) {
 			return respondJson(res, { error: 'Already started!' }, 403);
 		}
-		mcm.start(function(err) {
+		mcm.start((err) => {
 			if (err) {
 				debugServer(err);
 				return respondJson(res, { error: 'Cannot start server!' }, 500);
@@ -58,13 +62,13 @@ routes.post('/start', function(req, res) {
 	});
 });
 
-routes.post('/stop', function(req, res) {
-	mcm.getStatus(function(err, stat) {
+routes.post('/stop', (req, res) => {
+	mcm.getStatus((err, stat) => {
 		if (err) {
 			return respondJson(res, { error: 'Already stopped!' }, 403);
 		}
 		if (stat.num_players === 0) {
-			mcm.stop(function(err) {
+			mcm.stop((err) => {
 				if (err) {
 					debugServer(err);
 					return respondJson(res, { error: 'Cannot stop server!' }, 500);

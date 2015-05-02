@@ -1,13 +1,14 @@
-var http = require('http');
-var finalhandler = require('finalhandler');
-var debugServer = require('debug')('mcm:server');
-var routes = require('./routes');
+import http from 'http';
+import finalhandler from 'finalhandler';
+import debug from 'debug';
+import routes from './routes';
 
-var server = http.createServer(function(req, res) {
+let debugServer = debug('mcm:server');
+let server = http.createServer((req, res) => {
 	routes(req, res, finalhandler(req, res));
 });
-server.listen(process.argv[2] || 8000, '127.0.0.1', function() {
+server.listen(process.argv[2] || 8000, '127.0.0.1', () => {
 	debugServer("server listening on %j", server.address());
 });
 
-module.exports = server;
+export default server;

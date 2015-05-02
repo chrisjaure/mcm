@@ -9,8 +9,9 @@
     "build": "NODE_ENV=production npm run build-js && npm run build-css",
     "build-css": "cat client/style.css | autoprefixer | cleancss > client/build.css",
     "build-js": "browserify client/index.js -t cssify -t babelify | uglifyjs --compress --mangle > client/build.js",
-    "dev": "npm run watch-js & npm run watch-css & DEBUG='mcm:*' node server/index.js",
-    "start": "npm run build && NODE_ENV=production node server/index.js",
+    "dev": "npm run watch-js & npm run watch-css & DEBUG='mcm:*' npm run server",
+    "start": "npm run build && NODE_ENV=production npm run server",
+    "server": "babel-node server/index.js",
     "watch-css": "watch-run -ip 'client/style.css' -- autoprefixer client/style.css -mo client/build.css & browser-sync start --files='client/build.css' --no-ui --logLevel=silent",
     "watch-js": "./bin/watch-js"
   },
@@ -26,6 +27,7 @@
   "homepage": "https://github.com/chrisjaure/mcm",
   "dependencies": {
     "autoprefixer": "^5.1.1",
+    "babel": "^5.2.6",
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
     "clean-css": "^3.1.9",
