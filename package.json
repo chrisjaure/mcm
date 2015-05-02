@@ -38,6 +38,7 @@
     "finalhandler": "^0.3.4",
     "googleapis": "^2.0.2",
     "mc-ping": "0.0.3",
+    "mime-types": "^2.0.10",
     "react": "^0.13.2",
     "replacestream": "^2.1.0",
     "router": "^1.0.0",

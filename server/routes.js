@@ -2,6 +2,7 @@ import fs from 'fs';
 import { Readable } from 'stream';
 import Router from 'router';
 import debug from 'debug';
+import mime from 'mime-types';
 import CombinedStream from 'combined-stream';
 import replaceStream from 'replacestream';
 import Mcm from '../index';
@@ -13,7 +14,7 @@ const debugServer = debug('mcm:server');
 const mcm = Mcm();
 
 function respondJson (res, object, code) {
-	res.writeHead(code || 200, {"Content-Type": "application/json"});
+	res.writeHead(code || 200, {"Content-Type": mime.contentType('json')});
 	res.end(JSON.stringify(object));
 }
 
@@ -31,14 +32,17 @@ routes.get('/', (req, res) => {
 		script.push(null);
 		index.append(script);
 	}
+	res.writeHead(200, {"Content-Type": mime.contentType('html')});
 	index
 		.pipe(replaceStream('__REACTHTML__', reactHtml))
 		.pipe(res);
 });
 routes.get('/build.js', (req, res) => {
+	res.writeHead(200, {"Content-Type": mime.contentType('js')});
 	fs.createReadStream(__dirname + '/../client/build.js').pipe(res);
 });
 routes.get('/build.css', (req, res) => {
+	res.writeHead(200, {"Content-Type": mime.contentType('css')});
 	fs.createReadStream(__dirname + '/../client/build.css').pipe(res);
 });
 
