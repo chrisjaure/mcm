@@ -3,7 +3,9 @@ import { Readable } from 'stream';
 import Router from 'router';
 import debug from 'debug';
 import CombinedStream from 'combined-stream';
+import replaceStream from 'replacestream';
 import Mcm from '../index';
+import React from 'react';
 import App from '../client/component/app';
 
 const routes = Router();
@@ -19,6 +21,7 @@ export default routes;
 
 routes.get('/', (req, res) => {
 	let index = CombinedStream.create();
+	let reactHtml = React.renderToString(React.createFactory(App)({}));
 	let script;
 	index.append(fs.createReadStream(__dirname + '/../client/index.html'));
 	if (process.env.NODE_ENV !== 'production') {
@@ -28,7 +31,9 @@ routes.get('/', (req, res) => {
 		script.push(null);
 		index.append(script);
 	}
-	index.pipe(res);
+	index
+		.pipe(replaceStream('__REACTHTML__', reactHtml))
+		.pipe(res);
 });
 routes.get('/build.js', (req, res) => {
 	fs.createReadStream(__dirname + '/../client/build.js').pipe(res);
