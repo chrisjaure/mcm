@@ -9,11 +9,12 @@
     "build": "NODE_ENV=production npm run build-js && npm run build-css",
     "build-css": "cat client/style.css | autoprefixer | cleancss > client/build.css",
     "build-js": "browserify client/index.js -t cssify -t babelify | uglifyjs --compress --mangle > client/build.js",
-    "dev": "npm run watch-js & npm run watch-css & DEBUG='mcm:*' npm run server",
+    "dev": "npm run reload-js & npm run watch-css & DEBUG='mcm:*' npm run server",
     "start": "npm run build && NODE_ENV=production npm run server",
     "server": "babel-node server/index.js",
     "watch-css": "watch-run -ip 'client/style.css' -- autoprefixer client/style.css -mo client/build.css & browser-sync start --files='client/build.css' --no-ui --logLevel=silent",
-    "watch-js": "./bin/watch-js"
+    "watch-js": "watchify client/index.js -t cssify -t babelify -t livereactload --debug --verbose -o client/build.js",
+    "reload-js": "npm run watch-js & livereactload monitor client/build.js & wait"
   },
   "repository": {
     "type": "git",
@@ -48,7 +49,7 @@
   "devDependencies": {
     "browser-sync": "^2.6.4",
     "jasmine": "^2.2.1",
-    "livereactload": "^0.4.0",
+    "livereactload": "^0.5.0",
     "proxyquire": "^1.4.0",
     "watch-run": "^1.2.2",
     "watchify": "^3.1.0"
