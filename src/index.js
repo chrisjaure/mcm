@@ -1,34 +1,32 @@
-var mcping = require('mc-ping');
-var google = require('googleapis');
-var compute = google.compute('v1');
-var EventEmitter = require('eventemitter3');
-var debug = require('debug');
-var log = {
+import mcping from 'mc-ping';
+import google from 'googleapis';
+import EventEmitter from 'eventemitter3';
+import debug from 'debug';
+
+const compute = google.compute('v1');
+const log = {
 	error: debug('mcm:error'),
 	info: debug('mcm:info')
 };
 
-var minecraftEnv = {
+const minecraftEnv = {
 	host: process.env.MC_SERVER || 'localhost',
 	port: process.env.MC_PORT || 25565
 };
 
-var computeEnv = {
+const computeEnv = {
 	project: process.env.GC_PROJECT,
 	zone: process.env.GC_ZONE,
 	instance: process.env.GC_INSTANCE
 };
 
-var starting = false;
-var stopping = false;
+let starting = false;
+let stopping = false;
 
-module.exports = function createServer (minecraftConfig, computeConfig) {
-	var monitorTimer;
-	var noPlayers;
-	var server = new EventEmitter();
-
-	minecraftConfig = minecraftConfig || minecraftEnv;
-	computeConfig = computeConfig || computeEnv;
+export default function createServer (minecraftConfig = minecraftEnv, computeConfig = computeEnv) {
+	let monitorTimer;
+	let noPlayers;
+	let server = new EventEmitter();
 
 	function clearTimer () {
 		if (monitorTimer) {
@@ -40,7 +38,7 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 
 	function authGoogleCompute (callback) {
 		// Get the appropriate type of credential client, depending upon the runtime environment.
-		google.auth.getApplicationDefault(function(err, authClient) {
+		google.auth.getApplicationDefault((err, authClient) => {
 			if (err) {
 				log.error(err);
 			}
@@ -57,9 +55,9 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 	}
 
 	function getStatus (callback) {
-		mcping(minecraftConfig.host, minecraftConfig.port, function(err, stat) {
+		mcping(minecraftConfig.host, minecraftConfig.port, (err, stat) => {
 			if (!err) {
-				['num_players', 'max_players'].forEach(function(prop) {
+				['num_players', 'max_players'].forEach((prop) => {
 					if (stat[prop] !== undefined) {
 						stat[prop] = Number(stat[prop]);
 					}
@@ -73,8 +71,8 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 	function monitor() {
 		clearTimer();
 		log.info('Monitoring started');
-		monitorTimer = setInterval(function() {
-			server.getStatus(function(err, stat) {
+		monitorTimer = setInterval(() => {
+			server.getStatus((err, stat) => {
 				if (err) {
 					return log.error(err);
 				}
@@ -95,13 +93,13 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 		starting = true;
 		callback = callback || function() {};
 		log.info('Attempting to start Minecraft server');
-		authGoogleCompute(function(err, authClient) {
+		authGoogleCompute((err, authClient) => {
 			if (err) {
 				starting = false;
 				return callback(err);
 			}
 			computeConfig.auth = authClient;
-			compute.instances.start(computeConfig, function(err) {
+			compute.instances.start(computeConfig, (err) => {
 				if (err) {
 					log.error(err);
 					starting = false;
@@ -121,15 +119,14 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 			return callback(new Error('Already trying to stop server!'));
 		}
 		stopping = true;
-		callback = callback || function() {};
 		log.info('Attempting to stop Minecraft server');
-		authGoogleCompute(function(err, authClient) {
+		authGoogleCompute((err, authClient) => {
 			if (err) {
 				stopping = false;
 				return callback(err);
 			}
 			computeConfig.auth = authClient;
-			compute.instances.stop(computeConfig, function(err) {
+			compute.instances.stop(computeConfig, (err) => {
 				if (err) {
 					log.error(err);
 					stopping = false;
@@ -148,12 +145,8 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 	server.getStatus = getStatus;
 	server.monitor = monitor;
 
-	server.on('empty', function() {
-		server.stop();
-	});
-	server.on('start', function() {
-		server.monitor();
-	});
+	server.on('empty', () => server.stop());
+	server.on('start', () => server.monitor());
 	server.on('stop', clearTimer);
 
 	// check if server is already running
@@ -166,4 +159,4 @@ module.exports = function createServer (minecraftConfig, computeConfig) {
 
 	return server;
 
-};
+}

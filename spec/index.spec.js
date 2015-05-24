@@ -18,7 +18,7 @@ describe('mcm api', function() {
 				auth: authSpy
 			}
 		};
-		mcm = proxyquire('../index', mocks);
+		mcm = proxyquire('../src', mocks);
 	});
 	afterEach(function() {
 		jasmine.clock().uninstall();
@@ -43,7 +43,7 @@ describe('mcm api', function() {
 		it('should call mc-ping with ENV vars', function() {
 			process.env.MC_SERVER = 'server';
 			process.env.MC_PORT = 'port';
-			mcm = proxyquire('../index', mocks);
+			mcm = proxyquire('../src', mocks);
 			var server = mcm();
 			mocks['mc-ping'].calls.reset();
 			server.getStatus();
@@ -87,7 +87,7 @@ describe('mcm api', function() {
 			expect(authSpy.getApplicationDefault).toHaveBeenCalled();
 		});
 		it('should start instance with ENV vars', function() {
-			mcm = proxyquire('../index', mocks);
+			mcm = proxyquire('../src', mocks);
 			var server = mcm();
 			authSpy.getApplicationDefault.and.callFake(function(cb) {
 				cb(null, 'authClient');
@@ -138,7 +138,7 @@ describe('mcm api', function() {
 			expect(authSpy.getApplicationDefault).toHaveBeenCalled();
 		});
 		it('should stop instance with ENV vars', function() {
-			mcm = proxyquire('../index', mocks);
+			mcm = proxyquire('../src', mocks);
 			var server = mcm();
 			authSpy.getApplicationDefault.and.callFake(function(cb) {
 				cb(null, 'authClient');

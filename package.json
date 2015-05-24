@@ -4,8 +4,9 @@
   "description": "Automatically start up and shut down a minecraft server.",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine",
-    "test-watch": "watch-run -ip 'spec/**.spec.js' -- jasmine"
+    "test": "jasmine-es6",
+    "test-watch": "watch-run -ip 'spec/**.spec.js' -- npm test",
+    "compile": "babel src --out-dir lib"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "babel": "^5.2.6",
     "jasmine": "^2.2.1",
+    "jasmine-es6": "0.0.3",
     "proxyquire": "^1.4.0",
     "watch-run": "^1.2.2"
   }
