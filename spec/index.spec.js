@@ -20,6 +20,9 @@ describe('mcm api', function() {
 		};
 		mcm = proxyquire('../index', mocks);
 	});
+	afterEach(function() {
+		jasmine.clock().uninstall();
+	});
 	it('should create server', function() {
 		var server = mcm();
 		expect(server.start).toBeDefined();
