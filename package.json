@@ -2,7 +2,7 @@
   "name": "mcm",
   "version": "1.0.0",
   "description": "Automatically start up and shut down a minecraft server.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "jasmine-es6 spec/**spec.js",
     "test-watch": "watch 'npm run test' src spec",
