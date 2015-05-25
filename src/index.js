@@ -8,24 +8,21 @@ const log = {
 	error: debug('mcm:error'),
 	info: debug('mcm:info')
 };
-
 const minecraftEnv = {
 	host: process.env.MC_SERVER || 'localhost',
 	port: process.env.MC_PORT || 25565
 };
-
 const computeEnv = {
 	project: process.env.GC_PROJECT,
 	zone: process.env.GC_ZONE,
 	instance: process.env.GC_INSTANCE
 };
 
-let starting = false;
-let stopping = false;
-
 export default function createServer (minecraftConfig = minecraftEnv, computeConfig = computeEnv) {
 	let monitorTimer;
 	let noPlayers;
+	let starting = false;
+	let stopping = false;
 	let server = new EventEmitter();
 
 	function clearTimer () {
@@ -145,8 +142,8 @@ export default function createServer (minecraftConfig = minecraftEnv, computeCon
 	server.getStatus = getStatus;
 	server.monitor = monitor;
 
-	server.on('empty', () => server.stop());
-	server.on('start', () => server.monitor());
+	server.on('empty', server.stop);
+	server.on('start', server.monitor);
 	server.on('stop', clearTimer);
 
 	// check if server is already running
