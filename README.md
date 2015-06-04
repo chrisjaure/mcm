@@ -15,7 +15,7 @@ You also need to download [Google Application credentials](https://developers.go
 
 # Example
 
-```
+```javascript
 import mcm from 'mcm';
 
 let minecraftOptions = {
@@ -49,7 +49,7 @@ mcServer.getStatus((err, stat) => {
 
 # Usage
 
-```
+```javascript
 const mcServer = mcm([minecraftOptions], [googleComputeOptions]);
 ```
 
@@ -66,14 +66,14 @@ const mcServer = mcm([minecraftOptions], [googleComputeOptions]);
 
 `minecraftOptions` defaults to:
 
-```
+```javascript
 { host: process.env.MC_SERVER || 'localhost',
   port: process.env.MC_PORT || 25565 }
 ```
 
 `googleComputeOptions` defaults to:
 
-```
+```javascript
 { project: process.env.GC_PROJECT,
   zone: process.env.GC_ZONE,
   instance: process.env.GC_INSTANCE }
@@ -101,7 +101,7 @@ Callback should take two arguments, `err` and `status`.
 
 `status` will contain an object that looks similar to:
 
-```
+```javascript
 { protocol_version: '51',
   minecraft_version: '1.4.7',
   server_name: 'Your Server MOTD',
